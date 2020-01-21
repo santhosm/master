@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: demo-deploy
+  labels: 
+    name: rs-label
+    type: back-end
+spec: 
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template: 
+
+
+    metadata:
+      name: kulbhushanmayer/genesys:1.0
+      labels:
+        name: rs-label
+        type: back-end
+
+    spec:
+      tolerations:
+      - key: "taintdemo"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      containers:
+        - name: httpd
+          image: yogeshraheja/yogeshk8stest
+
+  replicas: 2
+  selector: 
+    matchLabels: 
+      name: rs-label
+      type: back-end
+
